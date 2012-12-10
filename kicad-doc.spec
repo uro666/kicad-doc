@@ -1,30 +1,19 @@
 #define _disable_ld_no_undefined 1
 
-# For doc,
-# See http://iut-tice.ujf-grenoble.fr/cao/how_to_download_sources.txt
-# bzr branch lp:~kicad-developers/kicad/doc
-# 
-# You can get the date by querying:
-# $ bzr log -r-1 --line doc/
-# 216: Andrey Fedorushkov 2011-06-02 update russian GUI
-
 %define name kicad-doc
-%define date 20110602
-%define revision 216
-%define version 1.2.%{date}.bzr%{revision}
-%define release %mkrel 1
+%define version 1.1
+%define release %mkrel 3
 
-Name:     	%{name}
-Summary:  	Documentation for kicad (creation of electronic schematic diagrams)
-Version:  	%{version}
-Release:  	%{release}
-Source0:  	%{name}-bzr%{revision}.tar.bz2
-License:  	GPL
-Group:    	Sciences/Computer science
-Url:      	http://www.lis.inpg.fr/realise_au_lis/kicad/
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires:	cmake
-BuildArch:	noarch
+Summary:  Documentation for kicad (creation of electronic schematic diagrams)
+Name:     %{name}
+Version:  %{version}
+Release:  %{release}
+Source0:  %{name}-%{version}.tar.bz2
+License:  GPL
+Group:    Sciences/Computer science
+Url:      http://www.lis.inpg.fr/realise_au_lis/kicad/
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRequires: cmake
 
 %description
 Kicad is an open source (GPL) software for the creation of electronic 
@@ -32,16 +21,8 @@ schematic diagrams and printed circuit board artwork.
 
 Kicad-doc is the documentation for kicad.
 
-%package locales
-Summary:	Kicad locales
-Requires:	kicad
-BuildArch:	noarch
-
-%description locales
-Providing locales for the Kicad software.
-
 %prep
-%setup -q -n %{name}
+%setup -q -n kicad
 
 %build
 export LC_ALL=C
@@ -67,6 +48,18 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc %{_datadir}/doc/kicad
 
-%files locales
-%defattr(-,root,root)
-%{_datadir}/kicad
+
+%changelog
+* Fri Dec 10 2010 Oden Eriksson <oeriksson@mandriva.com> 1.1-3mdv2011.0
++ Revision: 619965
+- the mass rebuild of 2010.0 packages
+
+* Fri Sep 04 2009 Thierry Vignaud <tv@mandriva.org> 1.1-2mdv2010.0
++ Revision: 429686
+- rebuild
+
+* Thu Aug 21 2008 trem <trem@mandriva.org> 1.1-1mdv2009.0
++ Revision: 274949
+- import kicad-doc
+
+
