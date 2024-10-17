@@ -11,7 +11,7 @@ Release:  %{release}
 Source0:  %{name}-%{version}.tar.bz2
 License:  GPL
 Group:    Sciences/Computer science
-Url:      http://www.lis.inpg.fr/realise_au_lis/kicad/
+Url:      https://www.lis.inpg.fr/realise_au_lis/kicad/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: cmake
 
