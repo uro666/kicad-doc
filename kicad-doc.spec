@@ -1,65 +1,56 @@
-#define _disable_ld_no_undefined 1
+%define debug_package %{nil}
+%define cxxstd 20
+################################################################################
+#	NOTE	Update this package at same time as the kicad and kicad-packages3d
+#	NOTE	The KiCad packages are split this way to accommodate the build farm.
+################################################################################
 
-%define name kicad-doc
-%define version 1.1
-%define release %mkrel 3
+Name:		kicad-doc
+Version:	9.0.0
+Release:	4
+Summary:	Documentation for KiCad
+License:	GPL-3.0-or-later
+Group:		Sciences/Computer science
+URL:		https://www.kicad.org
+Source0:	https://gitlab.com/kicad/services/kicad-doc/-/archive/%{version}/%{name}-%{version}.tar.gz
 
-Summary:  Documentation for kicad (creation of electronic schematic diagrams)
-Name:     %{name}
-Version:  %{version}
-Release:  %{release}
-Source0:  %{name}-%{version}.tar.bz2
-License:  GPL
-Group:    Sciences/Computer science
-Url:      https://www.lis.inpg.fr/realise_au_lis/kicad/
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires: cmake
+BuildArch:	noarch
+BuildRequires:	cmake
+BuildRequires:	ninja
+BuildRequires:	po4a
+BuildRequires:	a2x
+BuildRequires:	asciidoctor
+
+Requires:	kicad = %{version}-%{release}
 
 %description
-Kicad is an open source (GPL) software for the creation of electronic 
-schematic diagrams and printed circuit board artwork. 
+Documentation for KiCad.
 
-Kicad-doc is the documentation for kicad.
+KiCad is EDA software to design electronic schematic diagrams and printed
+circuit board artwork of up to 32 layers.
+
 
 %prep
-%setup -q -n kicad
+%autosetup
+#autopatch -p1
 
 %build
-export LC_ALL=C
-%cmake -DBUILD_SHARED_LIBS:BOOL=OFF
-%make
+export CFLAGS="%{optflags}"
+export CXXFLAGS="%{optflags}"
+export LDFLAGS="%{ldflags} -v -Wl,--verbose --warn-backrefs"
+
+# Documentation (HTML only)
+%cmake \
+	-G Ninja \
+	-DCMAKE_CXX_STANDARD=%{cxxstd} \
+	-DKICAD_DOC_PATH=%{_docdir}/kicad/help \
+	-DPDF_GENERATOR=none \
+	-DBUILD_FORMATS=html
+%ninja_build
 
 %install
-rm -rf %{buildroot}
-make -C build DESTDIR=%buildroot install
-
-%clean
-rm -rf %{buildroot}
-
-%if %mdkversion < 200900
-%post
-%endif
-
-%if %mdkversion < 200900
-%postun
-%endif
+%ninja_install -C build
 
 %files
-%defattr(-,root,root)
-%doc %{_datadir}/doc/kicad
-
-
-%changelog
-* Fri Dec 10 2010 Oden Eriksson <oeriksson@mandriva.com> 1.1-3mdv2011.0
-+ Revision: 619965
-- the mass rebuild of 2010.0 packages
-
-* Fri Sep 04 2009 Thierry Vignaud <tv@mandriva.org> 1.1-2mdv2010.0
-+ Revision: 429686
-- rebuild
-
-* Thu Aug 21 2008 trem <trem@mandriva.org> 1.1-1mdv2009.0
-+ Revision: 274949
-- import kicad-doc
-
-
+%{_docdir}/kicad/help/
+%license LICENSE*
