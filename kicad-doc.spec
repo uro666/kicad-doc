@@ -15,13 +15,14 @@ URL:		https://www.kicad.org
 Source0:	https://gitlab.com/kicad/services/kicad-doc/-/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildArch:	noarch
+
 BuildRequires:	cmake
 BuildRequires:	ninja
 BuildRequires:	po4a
 BuildRequires:	a2x
 BuildRequires:	asciidoctor
 
-Requires:	kicad = %{version}-%{release}
+Suggests:	kicad >= %{version}-%{release}
 
 %description
 Documentation for KiCad.
